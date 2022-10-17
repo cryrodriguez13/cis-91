@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Welcome to my CIS-91 project!</h1>
+<p>Crystal Rodriguez</p>
+<p>- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: index.html
+    dest: /var/www/html/index.html
+    owner: www-data
+    group: www-data
+    mode: '0644' </p>
+</body>
+</html>
+
