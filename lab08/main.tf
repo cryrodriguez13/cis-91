@@ -50,6 +50,13 @@ resource "google_compute_instance" "vm_instance" {
     access_config {
     }
   }
+
+  service_account {
+    email  = google_service_account.lab08-service-account.email
+    scopes = ["cloud-platform"]
+}
+
+   allow_stopping_for_update = true
 }
 
 resource "google_compute_firewall" "default-firewall" {
@@ -71,11 +78,6 @@ resource "google_service_account" "lab08-service-account" {
 resource "google_project_iam_member" "project_member" {
   role = "roles/compute.viewer"
   member = "serviceAccount:${google_service_account.lab08-service-account.email}"
-}
-
-service_account {
-    email  = google_service_account.lab08-service-account.email
-    scopes = ["cloud-platform"]
 }
 
 output "external-ip" {
