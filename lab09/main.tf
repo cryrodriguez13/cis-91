@@ -1,11 +1,10 @@
 
 variable "credentials_file" { 
-  default = file ("/home/cry8499/cis-91/cis-91-361922-286e86948aff.json")
-
+  default = "/home/cry8499/cis-91/cis-91-361922-286e86948aff.json" 
 }
 
 variable "project" {
-  default = "your-project-here"
+  default = "cis-91-361922"
 }
 
 variable "region" {
@@ -51,6 +50,21 @@ resource "google_compute_instance" "vm_instance" {
     access_config {
     }
   }
+
+  attached_disk {
+    source = google_compute_disk.lab09.self_link
+    device_name = "lab09"
+  }
+
+  attached_disk {
+    source = google_compute_disk.usingblockstorage1.self_link
+    device_name = "usingblockstorage1"
+  }
+
+  attached_disk {
+    source = google_compute_disk.usingblockstorage2.self_link
+    device_name = "usingblockstorage2"
+  }
 }
 
 resource "google_compute_firewall" "default-firewall" {
@@ -58,9 +72,36 @@ resource "google_compute_firewall" "default-firewall" {
   network = google_compute_network.vpc_network.name
   allow {
     protocol = "tcp"
-    ports = ["22"]
+    ports = ["22", "80", "3000", "5000"]
   }
   source_ranges = ["0.0.0.0/0"]
+}
+
+resource "google_compute_disk" "lab09" {
+  name  = "lab09"
+  type  = "pd-ssd"
+  labels = {
+    environment = "dev"
+  }
+  size = "16"
+}
+
+resource "google_compute_disk" "usingblockstorage1" {
+  name  = "usingblockstorage1"
+  type  = "pd-ssd"
+  labels = {
+    environment = "data"
+  }
+  size = "100"
+}
+
+resource "google_compute_disk" "usingblockstorage2" {
+  name  = "usingblockstorage2"
+  type  = "pd-ssd"
+  labels = {
+    environment = "scratch"
+  }
+  size = "375"
 }
 
 output "external-ip" {
