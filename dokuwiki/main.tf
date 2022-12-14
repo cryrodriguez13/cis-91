@@ -1,11 +1,11 @@
 
 variable "credentials_file" { 
-  default = file ("/home/cry8499/cis-91/cis-91-361922-286e86948aff.json")
+  default = "/home/cry8499/cis-91/cis-91-361922-286e86948aff.json"
 
 }
 
 variable "project" {
-  default = "your-project-here"
+  default = "cis-91-361922"
 }
 
 variable "region" {
@@ -51,6 +51,36 @@ resource "google_compute_instance" "vm_instance" {
     access_config {
     }
   }
+
+  attached_disk {
+    source = google_compute_disk.dokuwiki.self_link
+    device_name = "systemDisk"
+  }
+
+  attached_disk {
+    source = google_compute_disk.dokuwiki1.self_link
+    device_name = "dataDisk"
+  }
+}
+
+resource "google_compute_disk" "dokuwiki" {
+  name  = "dokuwiki"
+  type  = "pd-ssd"
+  zone  = "us-central1-c"
+  labels = {
+    environment = "dev"
+  }
+  size = "16"
+}
+
+resource "google_compute_disk" "dokuwiki1" {
+  name  = "dokuwiki1"
+  type  = "pd-ssd"
+  zone  = "us-central1-c"
+    labels = {
+    environment = "dev"
+  }
+  size = "16"
 }
 
 resource "google_compute_firewall" "default-firewall" {

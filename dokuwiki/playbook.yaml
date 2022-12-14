@@ -8,5 +8,11 @@
         update_cache: yes
         cache_valid_time: 3600
         name:
-          - python3-pip 
-          - python3-venv
+          - apache2
+          - pip 
+          - php-xml
+          
+    - name: Extract dokuwiki-stable.tgz to /var/www/html
+      ansible.builtin.unarchive:
+        src: dokuwiki-stable.tgz
+        dest: /var/www/html
