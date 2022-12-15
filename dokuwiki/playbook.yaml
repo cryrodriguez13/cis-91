@@ -9,10 +9,12 @@
         cache_valid_time: 3600
         name:
           - apache2
-          - pip 
+          - php 
           - php-xml
           
     - name: Extract dokuwiki-stable.tgz to /var/www/html
       ansible.builtin.unarchive:
         src: dokuwiki-stable.tgz
         dest: /var/www/html
+
+
